@@ -38,13 +38,17 @@ body {
   overflow-x: hidden;
 }
 
-/* Le label capitales espacées : l'ADN typographique du packaging. */
-.label {
-  font-family: var(--font-sans);
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-weight: 600;
-  font-size: 0.6875rem;
+/* Le label capitales espacées : l'ADN typographique du packaging.
+   Déclaré dans la couche `components` pour que les utilitaires Tailwind
+   (`text-[9px]`, `tracking-*`…) puissent le surcharger au cas par cas. */
+@layer components {
+  .label {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    font-size: 0.6875rem;
+  }
 }
 
 /* Logo monochrome piloté par `color` — masque CSS, le SVG reste hors du bundle JS. */
@@ -83,5 +87,24 @@ html.lenis body {
 @media (min-width: 768px) {
   .hero-poster {
     background-image: url("/video/hero-desktop-poster.jpg");
+  }
+}
+
+/* Bandeau d'accès rapide des cartes produit : révélé au survol quand le
+   pointeur le permet, toujours visible au doigt. */
+.quick-add {
+  transition:
+    transform 0.45s var(--ease-brand),
+    opacity 0.3s ease;
+}
+@media (hover: hover) {
+  .quick-add {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  .group:hover .quick-add,
+  .group:focus-within .quick-add {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

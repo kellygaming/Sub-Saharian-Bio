@@ -16,8 +16,13 @@ export default function SiteHeader() {
     // Le header ne devient opaque qu'une fois le hero franchi : par-dessus la
     // vidéo, un bandeau nude couperait l'image en deux.
     const hero = document.querySelector<HTMLElement>(".hero");
-    const threshold = () => (hero ? hero.offsetHeight - 96 : 24);
-    const onScroll = () => setSolid(window.scrollY > threshold());
+    // Sans hero (boutique, fiche produit), le fond clair impose un header
+    // opaque dès le chargement : sinon le texte blanc devient illisible.
+    if (!hero) {
+      setSolid(true);
+      return;
+    }
+    const onScroll = () => setSolid(window.scrollY > hero.offsetHeight - 96);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

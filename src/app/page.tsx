@@ -1,6 +1,7 @@
 import HeroScrub from "@/components/HeroScrub";
 import SiteHeader from "@/components/SiteHeader";
 import Reveal from "@/components/Reveal";
+import ProductGrid from "@/components/ProductGrid";
 
 const UNIVERS = [
   {
@@ -36,7 +37,7 @@ export default function Home() {
         {/* ── Le produit ─────────────────────────────────────────── */}
         <section
           id="elixir"
-          className="bg-ssb-nude px-6 py-24 md:px-12 md:py-36"
+          className="scroll-mt-24 bg-ssb-nude px-6 py-24 md:px-12 md:py-36"
         >
           <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2 lg:items-center">
             <Reveal>
@@ -102,10 +103,34 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ── Meilleures ventes ──────────────────────────────────── */}
+        <section className="bg-ssb-nude px-6 pb-24 md:px-12 md:pb-32">
+          <div className="mx-auto max-w-7xl">
+            <Reveal className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <p className="label text-ssb-green-deep">Meilleures ventes</p>
+                <h2 className="mt-4 font-display text-4xl leading-tight text-ssb-ink md:text-5xl">
+                  Ce que nos clientes reprennent.
+                </h2>
+              </div>
+              <a
+                href="/boutique"
+                className="text-sm font-semibold text-ssb-green-deep underline-offset-4 hover:underline"
+              >
+                Voir tous les soins →
+              </a>
+            </Reveal>
+
+            <div className="mt-12">
+              <ProductGrid limite={4} />
+            </div>
+          </div>
+        </section>
+
         {/* ── Les univers ────────────────────────────────────────── */}
         <section
           id="gammes"
-          className="bg-ssb-nude-warm px-6 py-24 md:px-12 md:py-32"
+          className="scroll-mt-24 bg-ssb-nude-warm px-6 py-24 md:px-12 md:py-32"
         >
           <div className="mx-auto max-w-7xl">
             <Reveal>
@@ -142,7 +167,7 @@ export default function Home() {
         {/* ── Diagnostic ─────────────────────────────────────────── */}
         <section
           id="diagnostic"
-          className="bg-ssb-green px-6 py-24 md:px-12 md:py-32"
+          className="scroll-mt-24 bg-ssb-green px-6 py-24 md:px-12 md:py-32"
         >
           <Reveal className="mx-auto max-w-3xl text-center">
             <p className="label text-white/70">Diagnostic personnalisé</p>
@@ -164,7 +189,10 @@ export default function Home() {
       </main>
 
       {/* ── Pied de page ─────────────────────────────────────────── */}
-      <footer id="histoire" className="bg-ssb-ink px-6 py-20 md:px-12">
+      <footer
+        id="histoire"
+        className="scroll-mt-24 bg-ssb-ink px-6 py-20 md:px-12"
+      >
         <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[1fr_auto]">
           <div>
             <div
