@@ -79,7 +79,7 @@ export default function ProductCard({
               ? `Retirer ${produit.nom} des favoris`
               : `Ajouter ${produit.nom} aux favoris`
           }
-          className={`absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-full backdrop-blur-sm transition sm:right-3 sm:top-3 sm:h-9 sm:w-9 ${t.coeur}`}
+          className={`absolute right-2.5 top-2.5 grid h-9 w-9 place-items-center rounded-full backdrop-blur-sm transition sm:right-3 sm:top-3 ${t.coeur}`}
         >
           <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
             <path
@@ -97,7 +97,7 @@ export default function ProductCard({
             appareils tactiles (sans survol) il reste affiché. */}
         <a
           href={`/boutique/${produit.slug}`}
-          className="quick-add absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 rounded-t-[1.1rem] bg-ssb-green/95 py-2 backdrop-blur-sm sm:rounded-t-[1.35rem] sm:py-2.5"
+          className="quick-add absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 rounded-t-[1.1rem] bg-ssb-green/95 py-2.5 backdrop-blur-sm sm:rounded-t-[1.35rem] sm:py-2.5"
         >
           <span className="label text-[9px] text-white sm:text-[11px]">
             {produit.epuise ? "Bientôt de retour" : "Voir le produit"}
@@ -120,7 +120,7 @@ export default function ProductCard({
       </div>
 
       {/* ── Informations ───────────────────────────────────────── */}
-      <div className="flex flex-1 flex-col px-2.5 pb-1.5 pt-3 sm:px-3 sm:pt-4">
+      <div className="flex min-w-0 flex-1 flex-col px-2 pb-1.5 pt-3 sm:px-3 sm:pt-4">
         <p className={`label ${t.surtitre}`}>{produit.famille}</p>
 
         <h3
@@ -141,7 +141,7 @@ export default function ProductCard({
           ))}
         </ul>
 
-        <div className="mt-4 flex items-end justify-between gap-2 pt-1 sm:mt-5 sm:gap-3">
+        <div className="mt-4 flex items-end justify-between gap-1.5 pt-1 sm:mt-5 sm:gap-3">
           <div>
             {produit.prixBarre && (
               <p className={`text-xs line-through ${t.texte}`}>
@@ -159,7 +159,7 @@ export default function ProductCard({
             type="button"
             disabled={produit.epuise}
             aria-label={`Ajouter ${produit.nom} au panier`}
-            className={`grid h-10 w-10 shrink-0 place-items-center rounded-full transition duration-300 ease-brand disabled:cursor-not-allowed disabled:opacity-40 group-hover:scale-105 sm:h-12 sm:w-12 ${t.bouton}`}
+            className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition duration-300 ease-brand disabled:cursor-not-allowed disabled:opacity-40 group-hover:scale-105 sm:h-12 sm:w-12 ${t.bouton}`}
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
               <path

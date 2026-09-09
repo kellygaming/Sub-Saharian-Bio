@@ -85,7 +85,7 @@ export default function ProductGrid({
 
       <div
         ref={grille}
-        className="mt-10 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4"
+        className="mt-10 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4"
       >
         {visibles.map((p, i) => (
           <ProductCard

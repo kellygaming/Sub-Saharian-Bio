@@ -99,7 +99,7 @@ export default function Home() {
               </div>
               <a
                 href="/boutique"
-                className="text-sm font-semibold text-ssb-green-deep underline-offset-4 hover:underline"
+                className="-mx-2 rounded-full px-2 py-2.5 text-sm font-semibold text-ssb-green-deep underline-offset-4 hover:underline"
               >
                 Voir tous les soins →
               </a>

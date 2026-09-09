@@ -98,34 +98,34 @@ export default function HeroScrub() {
           }
         });
 
-        // La typo suit le geste : elle s'efface quand l'huile arrive.
-        gsap
-          .timeline({
-            scrollTrigger: {
-              trigger: root,
-              start: "top top",
-              end: () => `+=${root.offsetHeight * 0.45}`,
-              scrub: 0.6,
-            },
-          })
-          .to(".hero-intro", { y: -60, opacity: 0, ease: "power1.in" }, 0)
-          .to(".hero-hint", { opacity: 0, duration: 0.2 }, 0);
-
-        gsap.fromTo(
+        // Toute la typo est pilotée par UNE timeline : deux tweens séparés se
+        // disputaient l'opacité du bloc final et le fondu de sortie ne passait
+        // jamais. Les positions sont des fractions de la plage d'épinglage.
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: root,
+            start: "top top",
+            end: () => `+=${root.offsetHeight - window.innerHeight}`,
+            scrub: 0.5,
+            invalidateOnRefresh: true,
+          },
+        });
+        tl.to({}, { duration: 1 }, 0); // référentiel 0 → 1
+        tl.to(
+          ".hero-intro",
+          { y: -60, opacity: 0, ease: "power1.in", duration: 0.42 },
+          0,
+        );
+        tl.to(".hero-hint", { opacity: 0, duration: 0.1 }, 0);
+        tl.fromTo(
           ".hero-outro",
           { opacity: 0, y: 40 },
-          {
-            opacity: 1,
-            y: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root,
-              start: () => `top+=${root.offsetHeight * 0.42} top`,
-              end: () => `+=${root.offsetHeight * 0.16}`,
-              scrub: 0.6,
-            },
-          },
+          { opacity: 1, y: 0, duration: 0.16, ease: "none" },
+          0.42,
         );
+        // Disparaît avant la fin de l'épinglage : sinon la scène glisse sous le
+        // header fixe et les boutons chevauchent le logo.
+        tl.to(".hero-outro", { opacity: 0, duration: 0.1, ease: "none" }, 0.88);
       };
 
       const demarrer = () => {

@@ -56,9 +56,23 @@ export default function SkinJourney({
       id="parcours"
       className="scroll-mt-24 bg-ssb-nude-warm px-6 py-24 md:px-12 md:py-32"
     >
-      <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:gap-10 lg:grid-cols-[1.05fr_1fr] lg:grid-rows-[auto_auto] lg:gap-x-20 lg:gap-y-6">
+        {/* ── Le titre ──────────────────────────────────────────── */}
+        <div className="min-w-0 lg:col-start-2 lg:row-start-1 lg:self-end">
+          <p className="label text-ssb-green-deep">Résultats visibles</p>
+          <h2 className="mt-4 font-display text-[2rem] leading-[1.05] text-ssb-ink sm:text-4xl md:text-5xl">
+            Votre peau,
+            <br />
+            semaine après semaine.
+          </h2>
+          <p className="mt-5 max-w-md text-lg leading-relaxed text-ssb-ink/70">
+            Touchez un jour du calendrier pour voir l&apos;évolution d&apos;une
+            peau à tendance acnéique avec la routine Sub Saharan Bio.
+          </p>
+        </div>
+
         {/* ── Le visage ─────────────────────────────────────────── */}
-        <figure className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-ssb-nude-deep shadow-[0_40px_80px_-40px_rgba(49,54,63,0.45)]">
+        <figure className="relative min-w-0 aspect-square overflow-hidden rounded-[2rem] sm:aspect-[4/5] lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:self-center bg-ssb-nude-deep shadow-[0_40px_80px_-40px_rgba(49,54,63,0.45)]">
           {etapes.map((e, i) => (
             <Image
               key={e.image}
@@ -95,22 +109,11 @@ export default function SkinJourney({
         </figure>
 
         {/* ── Le calendrier ─────────────────────────────────────── */}
-        <div>
-          <p className="label text-ssb-green-deep">Résultats visibles</p>
-          <h2 className="mt-4 font-display text-4xl leading-[1.05] text-ssb-ink md:text-5xl">
-            Votre peau,
-            <br />
-            semaine après semaine.
-          </h2>
-          <p className="mt-5 max-w-md text-lg leading-relaxed text-ssb-ink/70">
-            Touchez un jour du calendrier pour voir l&apos;évolution d&apos;une
-            peau à tendance acnéique avec la routine Sub Saharan Bio.
-          </p>
-
+        <div className="min-w-0 lg:col-start-2 lg:row-start-2 lg:self-start">
           <div
             role="group"
             aria-label="Choisir un jour de la routine"
-            className="mt-8 grid grid-cols-7 gap-2"
+            className="grid grid-cols-7 gap-1.5 sm:gap-2"
           >
             {Array.from({ length: JOURS }, (_, i) => i + 1).map((j) => {
               const actif = j === jour;
@@ -142,7 +145,7 @@ export default function SkinJourney({
                 key={e.titre}
                 type="button"
                 onClick={() => choisir([1, 7, 14][i])}
-                className={`rounded-full px-4 py-2 text-xs font-semibold transition ${
+                className={`rounded-full px-4 py-2.5 text-xs font-semibold transition ${
                   i === etape
                     ? "bg-ssb-green text-white"
                     : "bg-white/60 text-ssb-ink/70 hover:bg-white"
@@ -163,19 +166,19 @@ export default function SkinJourney({
           </div>
 
           {/* ── Le produit ────────────────────────────────────── */}
-          <div className="mt-10 flex items-center gap-5 rounded-[1.75rem] bg-white p-4 pr-6">
-            <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-2xl bg-ssb-nude">
+          <div className="mt-10 flex flex-wrap items-center gap-4 rounded-[1.75rem] bg-white p-4 sm:gap-5 sm:pr-6">
+            <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-2xl bg-ssb-nude sm:h-28 sm:w-24">
               <Image
                 src={produit.image}
                 alt={produit.nom}
                 fill
-                sizes="96px"
+                sizes="(max-width: 640px) 80px, 96px"
                 className="object-cover"
               />
             </div>
-            <div className="min-w-0 flex-1">
+            <div className="min-w-0 flex-1 basis-40">
               <p className="label text-ssb-green-deep">{produit.famille}</p>
-              <p className="mt-1 font-display text-xl leading-tight text-ssb-ink">
+              <p className="mt-1 font-display text-lg leading-tight text-ssb-ink break-words sm:text-xl">
                 {produit.nom}
               </p>
               <p className="mt-1 text-sm text-ssb-ink/60">{produit.prix}</p>
@@ -183,7 +186,7 @@ export default function SkinJourney({
             <a
               href="#"
               onClick={(e) => e.preventDefault()}
-              className="shrink-0 rounded-full bg-ssb-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ssb-green"
+              className="w-full shrink-0 rounded-full bg-ssb-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition hover:bg-ssb-green sm:w-auto"
             >
               Acheter
             </a>
