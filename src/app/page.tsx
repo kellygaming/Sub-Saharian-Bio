@@ -2,24 +2,8 @@ import HeroScrub from "@/components/HeroScrub";
 import SiteHeader from "@/components/SiteHeader";
 import Reveal from "@/components/Reveal";
 import ProductGrid from "@/components/ProductGrid";
-
-const UNIVERS = [
-  {
-    id: "visage",
-    title: "Visage",
-    text: "Purifiez, hydratez et illuminez votre visage avec des soins adaptés à vos besoins. Un teint uniforme, une peau visiblement plus belle.",
-  },
-  {
-    id: "corps",
-    title: "Corps",
-    text: "Une hydratation intense et durable grâce à nos soins corporels enrichis en ingrédients naturels. Peau douce, souple et éclatante.",
-  },
-  {
-    id: "gammes",
-    title: "Gammes",
-    text: "Des collections complètes élaborées pour révéler votre beauté naturelle et répondre aux besoins de chaque type de peau.",
-  },
-];
+import SkinJourney from "@/components/SkinJourney";
+import { ETAPES_PEAU, PRODUIT_PARCOURS } from "@/lib/parcours";
 
 const ACTIFS = [
   { nom: "Marula", role: "Régénère et nourrit en profondeur" },
@@ -127,42 +111,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Les univers ────────────────────────────────────────── */}
-        <section
-          id="gammes"
-          className="scroll-mt-24 bg-ssb-nude-warm px-6 py-24 md:px-12 md:py-32"
-        >
-          <div className="mx-auto max-w-7xl">
-            <Reveal>
-              <h2 className="max-w-2xl font-display text-4xl leading-tight text-ssb-ink md:text-5xl">
-                Votre peau est unique.
-                <br />
-                Nos soins le sont aussi.
-              </h2>
-            </Reveal>
-
-            <div className="mt-16 grid gap-px overflow-hidden rounded-3xl bg-ssb-nude-deep md:grid-cols-3">
-              {UNIVERS.map((univers, i) => (
-                <Reveal key={univers.id} delay={i * 0.08}>
-                  <article className="h-full bg-ssb-nude p-9 transition-colors hover:bg-white">
-                    <span className="label text-ssb-green">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="mt-4 font-display text-3xl text-ssb-ink">
-                      {univers.title}
-                    </h3>
-                    <p className="mt-4 text-sm leading-relaxed text-ssb-ink/70">
-                      {univers.text}
-                    </p>
-                    <span className="mt-7 inline-block text-sm font-semibold text-ssb-green-deep">
-                      Explorer →
-                    </span>
-                  </article>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* ── Parcours peau ──────────────────────────────────────── */}
+        <SkinJourney etapes={ETAPES_PEAU} produit={PRODUIT_PARCOURS} />
 
         {/* ── Diagnostic ─────────────────────────────────────────── */}
         <section
