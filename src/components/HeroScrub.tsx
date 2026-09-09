@@ -39,39 +39,63 @@ export default function HeroScrub() {
     ).matches;
     const isNarrow = window.matchMedia("(max-width: 767px)").matches;
 
-    // Mobile et « mouvement réduit » : lecture en boucle, pas de pilotage au scroll.
-    // Le seek image par image reste peu fiable sur Safari iOS.
-    if (reduced || isNarrow) {
+    const lireEnBoucle = () => {
       video.loop = true;
       video.play().catch(() => {});
+    };
+
+    if (reduced) {
+      lireEnBoucle();
       return;
     }
 
     gsap.registerPlugin(ScrollTrigger);
+    let objectUrl: string | null = null;
+    let annule = false;
+
     const ctx = gsap.context(() => {
       const proxy = { t: 0 };
+      // Nombre d'images consécutives où la vidéo n'a pas suivi le scroll :
+      // au-delà d'un seuil, le téléphone ne sait pas seeker → repli en boucle.
+      let retards = 0;
 
       const build = () => {
         const duration = video.duration;
         if (!Number.isFinite(duration) || duration === 0) return;
 
-        gsap.to(proxy, {
-          t: duration,
-          ease: "none",
-          scrollTrigger: {
-            trigger: root,
-            start: "top top",
-            // La scène est épinglée par `position: sticky` (CSS natif) :
-            // ScrollTrigger n'a plus qu'à piloter le temps de la vidéo.
-            end: () => `+=${root.offsetHeight - window.innerHeight}`,
-            scrub: 0.45,
-            invalidateOnRefresh: true,
-          },
-          onUpdate: () => {
-            // On ne redemande pas de seek tant que le précédent n'a pas abouti :
-            // c'est ce qui évite le saccadement sur les molettes rapides.
-            if (!video.seeking) video.currentTime = proxy.t;
-          },
+        const trigger = ScrollTrigger.create({
+          trigger: root,
+          start: "top top",
+          // La scène est épinglée par `position: sticky` (CSS natif) :
+          // ScrollTrigger n'a plus qu'à piloter le temps de la vidéo.
+          end: () => `+=${root.offsetHeight - window.innerHeight}`,
+          scrub: 0.45,
+          invalidateOnRefresh: true,
+          animation: gsap.to(proxy, {
+            t: duration,
+            ease: "none",
+            onUpdate: () => {
+              // On ne redemande pas de seek tant que le précédent n'a pas
+              // abouti : c'est ce qui évite le saccadement sur les molettes
+              // rapides. Le `seeked` ci-dessous rattrape la dernière valeur.
+              if (!video.seeking) video.currentTime = proxy.t;
+
+              if (Math.abs(video.currentTime - proxy.t) > 1.2) {
+                if (++retards > 40) {
+                  trigger.kill();
+                  lireEnBoucle();
+                }
+              } else {
+                retards = 0;
+              }
+            },
+          }),
+        });
+
+        video.addEventListener("seeked", () => {
+          if (Math.abs(video.currentTime - proxy.t) > 0.05) {
+            video.currentTime = proxy.t;
+          }
         });
 
         // La typo suit le geste : elle s'efface quand l'huile arrive.
@@ -104,11 +128,42 @@ export default function HeroScrub() {
         );
       };
 
-      if (video.readyState >= 1) build();
-      else video.addEventListener("loadedmetadata", build, { once: true });
+      const demarrer = () => {
+        if (video.readyState >= 1) build();
+        else video.addEventListener("loadedmetadata", build, { once: true });
+      };
+
+      if (!isNarrow) {
+        demarrer();
+        return;
+      }
+
+      // Mobile : Safari iOS ne sait seeker que dans les plages déjà
+      // téléchargées, et bufferise par petits morceaux. On charge donc la
+      // vidéo entière en mémoire (blob) avant de la piloter : le seek devient
+      // instantané. En cas d'échec réseau on garde les <source> et on tente
+      // quand même.
+      const lisibleMp4 = video.canPlayType('video/mp4; codecs="avc1.64001F"');
+      const url = lisibleMp4 ? sources.mp4 : sources.webm;
+      fetch(url)
+        .then((r) => (r.ok ? r.blob() : Promise.reject(r.status)))
+        .then((blob) => {
+          if (annule) return;
+          objectUrl = URL.createObjectURL(blob);
+          video.src = objectUrl;
+          video.load();
+        })
+        .catch(() => {})
+        .finally(() => {
+          if (!annule) demarrer();
+        });
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      annule = true;
+      ctx.revert();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
   }, [sources]);
 
   /* 3. Amorçage iOS : un premier play()/pause() débloque le seek. */
@@ -132,7 +187,7 @@ export default function HeroScrub() {
   return (
     <section
       ref={rootRef}
-      className="hero relative h-[100svh] md:h-[340vh]"
+      className="hero relative h-[300svh] md:h-[340vh]"
       aria-label="Élixir de Marula"
     >
       <div className="hero-stage sticky top-0 h-[100svh] w-full overflow-hidden bg-ssb-nude-warm">
@@ -193,9 +248,9 @@ export default function HeroScrub() {
               </div>
             </div>
 
-            <div className="hero-outro absolute inset-x-0 bottom-24 hidden px-6 opacity-0 md:block md:px-12">
+            <div className="hero-outro absolute inset-x-0 bottom-10 px-6 opacity-0 md:bottom-24 md:px-12">
               <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-8">
-                <ul className="space-y-1.5 text-white/90">
+                <ul className="hidden space-y-1.5 text-white/90 md:block">
                   {[
                     "Beauté & jeunesse de la peau",
                     "Redonne vie aux peaux fatiguées",
