@@ -1,3 +1,4 @@
+import Image from "next/image";
 import HeroScrub from "@/components/HeroScrub";
 import SiteHeader from "@/components/SiteHeader";
 import Reveal from "@/components/Reveal";
@@ -5,9 +6,22 @@ import ProductGrid from "@/components/ProductGrid";
 import SkinJourney from "@/components/SkinJourney";
 import { ETAPES_PEAU, PRODUIT_PARCOURS } from "@/lib/parcours";
 
-const ACTIFS = [
-  { nom: "Marula", role: "Régénère et nourrit en profondeur" },
-  { nom: "Basilic", role: "Purifie et apaise les peaux fatiguées" },
+const TRIO = [
+  {
+    nom: "Renaissance",
+    type: "Sérum visage unifiant",
+    role: "Chébula & Vitamine C — anti-taches, illuminant, anti-âge",
+  },
+  {
+    nom: "Renaissance",
+    type: "Lotion exfoliante douce",
+    role: "Chébula & PHA — illuminante, anti-taches, hydratante",
+  },
+  {
+    nom: "Élixir de Marula",
+    type: "Sérum visage",
+    role: "Basilic & Marula — hydratation maximale, repulpe immédiatement",
+  },
 ];
 
 export default function Home() {
@@ -25,34 +39,39 @@ export default function Home() {
         >
           <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2 lg:items-center">
             <Reveal>
-              <p className="label text-ssb-green-deep">Le soin signature</p>
+              <p className="label text-ssb-green-deep">Le trio signature</p>
               <h2 className="mt-5 font-display text-4xl leading-[1.05] text-ssb-ink md:text-6xl">
-                Une seule goutte,
+                Trois gestes,
                 <br />
-                toute la sève du Sahel.
+                un teint unifié.
               </h2>
               <p className="mt-7 max-w-md text-lg leading-relaxed text-ssb-ink/75">
-                L&apos;huile de Marula est pressée à froid à partir des noyaux
-                d&apos;un arbre qui survit aux saisons sèches. Elle porte
-                naturellement ce dont une peau exposée au soleil et à la
-                poussière a besoin.
+                Exfolier, unifier, nourrir. Trois soins pensés pour agir
+                ensemble sur les taches et les marques du temps, sur une peau
+                exposée au soleil, à la poussière et à l&apos;humidité.
               </p>
 
-              <dl className="mt-10 grid gap-6 sm:grid-cols-2">
-                {ACTIFS.map((actif) => (
-                  <div
-                    key={actif.nom}
-                    className="border-l-2 border-ssb-green pl-5"
+              <ol className="mt-10 space-y-5">
+                {TRIO.map((soin, i) => (
+                  <li
+                    key={soin.type}
+                    className="flex gap-4 border-l-2 border-ssb-green pl-5"
                   >
-                    <dt className="font-display text-2xl text-ssb-green-deep">
-                      {actif.nom}
-                    </dt>
-                    <dd className="mt-1 text-sm leading-relaxed text-ssb-ink/70">
-                      {actif.role}
-                    </dd>
-                  </div>
+                    <span className="label mt-1.5 shrink-0 text-ssb-green">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="font-display text-xl leading-tight text-ssb-green-deep">
+                        {soin.nom}
+                        <span className="text-ssb-ink/45"> · {soin.type}</span>
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-ssb-ink/70">
+                        {soin.role}
+                      </p>
+                    </div>
+                  </li>
                 ))}
-              </dl>
+              </ol>
 
               <div className="mt-11 flex flex-wrap items-center gap-5">
                 <a
@@ -61,27 +80,29 @@ export default function Home() {
                 >
                   Ajouter au panier
                 </a>
-                <span className="font-display text-2xl text-ssb-ink">
-                  17 000 CFA
+                <span className="flex items-baseline gap-3">
+                  <span className="text-base text-ssb-ink/40 line-through">
+                    27 000
+                  </span>
+                  <span className="font-display text-2xl text-ssb-ink">
+                    26 000 FCFA
+                  </span>
                 </span>
               </div>
             </Reveal>
 
-            <Reveal delay={0.1}>
+            {/* Sur mobile le visuel passe en tête : sinon le client tombe sur
+                le bouton d'achat avant d'avoir vu le produit. */}
+            <Reveal delay={0.1} className="order-first lg:order-none">
               <figure className="overflow-hidden rounded-[2rem] bg-ssb-nude-deep">
-                <video
+                <Image
+                  src="/produits/trio-anti-age.jpg"
+                  alt="Le trio anti-âge Sub Saharan Bio : sérum Renaissance, lotion exfoliante Renaissance et Élixir de Marula"
+                  width={1180}
+                  height={1180}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="aspect-square w-full object-cover"
-                  poster="/video/pour-loop-poster.jpg"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  aria-label="Le sérum Élixir de Marula versé"
-                >
-                  <source src="/video/pour-loop.webm" type="video/webm" />
-                  <source src="/video/pour-loop.mp4" type="video/mp4" />
-                </video>
+                />
               </figure>
             </Reveal>
           </div>
