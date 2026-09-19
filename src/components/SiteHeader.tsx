@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 
 const NAV = [
-  { label: "Soins", href: "#elixir" },
-  { label: "Diagnostic", href: "#diagnostic" },
-  { label: "Gammes", href: "#gammes" },
-  { label: "Notre histoire", href: "#histoire" },
+  { label: "Soins", href: "/#elixir" },
+  { label: "Boutique", href: "/boutique" },
+  { label: "Diagnostic", href: "/#diagnostic" },
+  { label: "Notre histoire", href: "/histoire" },
 ];
 
 export default function SiteHeader() {
@@ -16,8 +16,8 @@ export default function SiteHeader() {
     // Le header ne devient opaque qu'une fois le hero franchi : par-dessus la
     // vidéo, un bandeau nude couperait l'image en deux.
     const hero = document.querySelector<HTMLElement>(".hero");
-    // Sans hero (boutique, fiche produit), le fond clair impose un header
-    // opaque dès le chargement : sinon le texte blanc devient illisible.
+    // Sans hero (boutique, histoire, fiche produit), le fond clair impose un
+    // header opaque dès le chargement : le contenu reste toujours lisible.
     if (!hero) {
       setSolid(true);
       return;
@@ -35,7 +35,7 @@ export default function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-12">
-        <a href="#top" className="flex items-center gap-3">
+        <a href="/" className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/brand/logo-ssb.svg"
@@ -70,7 +70,7 @@ export default function SiteHeader() {
         </nav>
 
         <a
-          href="#diagnostic"
+          href="/#diagnostic"
           className="rounded-full bg-ssb-green px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ssb-green-deep"
         >
           Diagnostic gratuit
