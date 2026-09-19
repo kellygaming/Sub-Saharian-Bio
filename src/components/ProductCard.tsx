@@ -96,11 +96,11 @@ export default function ProductCard({
             répété sur chaque carte, il saturait la grille de vert. Sur les
             appareils tactiles (sans survol) il reste affiché. */}
         <a
-          href={`/boutique/${produit.slug}`}
+          href={`/commande?produit=${produit.slug}`}
           className="quick-add absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 rounded-t-[1.1rem] bg-ssb-green/95 py-2.5 backdrop-blur-sm sm:rounded-t-[1.35rem] sm:py-2.5"
         >
           <span className="label text-[9px] text-white sm:text-[11px]">
-            {produit.epuise ? "Bientôt de retour" : "Voir le produit"}
+            {produit.epuise ? "Bientôt de retour" : "Commander"}
           </span>
           <svg
             viewBox="0 0 24 24"
@@ -155,11 +155,10 @@ export default function ProductCard({
             </p>
           </div>
 
-          <button
-            type="button"
-            disabled={produit.epuise}
-            aria-label={`Ajouter ${produit.nom} au panier`}
-            className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition duration-300 ease-brand disabled:cursor-not-allowed disabled:opacity-40 group-hover:scale-105 sm:h-12 sm:w-12 ${t.bouton}`}
+          <a
+            href={`/commande?produit=${produit.slug}`}
+            aria-label={`Commander ${produit.nom}`}
+            className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition duration-300 group-hover:scale-105 sm:h-12 sm:w-12 ${t.bouton}`}
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
               <path
@@ -178,7 +177,7 @@ export default function ProductCard({
                 strokeLinejoin="round"
               />
             </svg>
-          </button>
+          </a>
         </div>
       </div>
     </article>
